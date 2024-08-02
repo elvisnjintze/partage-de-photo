@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -56,7 +56,7 @@ ROOT_URLCONF = 'fotoblog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR.joinpath('templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,18 +88,14 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 8,
+        }
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
+        'NAME': 'authentication.validators.ContainsLetterValidator',
+    },]
 
 
 # Internationalization
@@ -123,3 +119,18 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# nous demandons à django d'utiliser le model personalisé User que nous avons crée dans l'app
+# authentication et non celui par defaut
+AUTH_USER_MODEL = 'authentication.User'
+#lorsque l'utilisateur doit se loguer on l'envoi à cette vue
+LOGIN_URL = 'login'
+#l'URL où django doit servir de media NB: il peut etre un serveur distant
+MEDIA_URL = '/media/'
+#emplacement local ou django doit stocké les fichiers et médias téléchargés
+MEDIA_ROOT = BASE_DIR.joinpath('media/')
+
+# Chemin où collectstatic rassemblera tous les fichiers statiques
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Emplacements supplémentaires où Django cherchera les fichiers statiques
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fotoblog</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script></script>
+</head>
+<body>
+    <div class="sidebar">
+        <h1>FotoBlog</h1>
+        {% if user.is_authenticated %}
+            <p>Salut, {{ user }} !</p>
+            {% if user.profile_photo %}
+                <img class="avatar" src={{ user.profile_photo.url }}>
+            {% else %}
+                <img class="avatar" src="{% static 'images/default_profile.png'%}">
+            {% endif %}
+            <p><a href="{% url 'home' %}">Accueil</a></p>
+            {% if perms.blog.add_photo %}
+              <p><a href="{% url 'photo-uploader' %}">Téléverser une photo</a></p>
+              <p><a href="{% url 'multiple-photos-uploader' %}">Téléverser plusieurs photos</a></p>
+             {% endif %}
+              <p><a href="{% url 'photo-profil' %}">Changer la photo de profil</a></p>
+            {% if perms.blog.add_blog %}
+              <p><a href="{% url 'create-blog' %}">Créer un billet de blog</a></p>
+            {% endif %}
+            <p><a href="{% url 'follow-users' %}">suivre des utilisateurs(céateurs)</a></p>
+              <p><a href="">Changer le mot de passe</a></p>
+            <p><a href="{% url 'logout' %}">Se déconnecter</a></p>
+        {% endif %}
+    </div>
+    <div class="main">
+        {% block content %}{% endblock content %}
+    </div>
+</body>
+</html>

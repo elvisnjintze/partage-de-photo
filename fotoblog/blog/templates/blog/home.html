@@ -1,0 +1,26 @@
+{% extends 'base.html'%}
+{% block content %}
+<h2>Les phots de notre galérie</h2>
+<div class="grid-container">
+
+{% for photo in photos %}
+<div class="post">
+<img src="{{ photo.image.url }}" alt="photo de la galérie">
+<p>
+    {{ photo.caption }}
+</p>
+</div>
+{% endfor %}
+</div>
+<h2>les Blogs</h2>
+<div class="grid-container">
+    {% for blog in blogs %}
+    <div class="post">
+        <a href="{% url 'view-blog' blog.id %}">
+            <h4>Billet : {{ blog.title }}</h4>
+            <img src="{{ blog.photo.image.url }}">
+        </a>
+    </div>
+{% endfor %}
+</div>
+{% endblock content %}
